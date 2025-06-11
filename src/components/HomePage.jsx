@@ -103,13 +103,13 @@ export default function HomePage() {
       <section className="py-20 px-4 bg-[#faf6ff]" id="contact">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-start">
           {/* Left Column */}
-          <div>
+          <div className="md:pr-10">
             <p className="text-sm text-gray-500 mb-2">[ Contact Us ]</p>
             <h3 className="text-4xl font-semibold text-black mb-4">Reach Out Your Way</h3>
             <p className="text-gray-600">
               Have more specific questions? Contact us through your preferred channel
             </p>
-            <div className="mt-6 space-y-3">
+            <div className="mt-6 space-y-3 flex flex-col items-center"> {/* Added flex, flex-col, and items-center */}
               <a
                 href="tel:+1234567890"
                 className="inline-block w-full max-w-xs bg-[#7e5ca3] hover:bg-[#6b4899] text-white text-center py-3 rounded font-medium"
@@ -128,26 +128,19 @@ export default function HomePage() {
           </div>
 
           {/* Right Column: Conversational Form */}
-          <form className="space-y-6">
-            <p className="text-black text-lg">
-              Hi! I'm <Input className="inline-block w-40 mx-2" placeholder="Your Name" />
-              a <Input className="inline-block w-40 mx-2" placeholder="Your Job" /> from{" "}
-              <Input className="inline-block w-40 mx-2" placeholder="Your City" /> that need help.
-              I have a question which are
-            </p>
-
-            <Textarea
-              placeholder="State your Questions here"
-              className="w-full border border-gray-300 rounded px-4 py-3 h-32"
-            />
-
-            <p className="text-black text-lg">
-              You can reach me at <Input className="inline-block w-60 mx-2" placeholder="Email address" /> to get things started.
-            </p>
-
-            <Button type="submit" className="bg-[#7e5ca3] hover:bg-[#6b4899]">
-              Submit
-            </Button>
+          <form className="max-w-2xl mx-auto space-y-4 md:pl-16 md:border-l md:border-gray-300"> {/* Changed md:pl-10 to md:pl-16 */}
+            <h3 className="text-4xl text-black mb-4">Fill the Form &</h3>
+            <h3 className="text-4xl font-semibold text-black mb-4">We will Contact You</h3><br />
+            <div className="grid md:grid-cols-2 gap-4">
+              <Input placeholder="Your Name" required />
+              <Input placeholder="Your City" required />
+            </div>
+            <Textarea placeholder="Your Question" required className="h-32 w-full border border-gray-300 rounded px-4 py-2" />
+            <div className="grid md:grid-cols-2 gap-4">
+              <Input placeholder="Phone" required />
+              <Input placeholder="Email Address" required />
+            </div>
+            <Button type="submit" className="bg-[#7e5ca3] hover:bg-[#6b4899]">Submit</Button>
           </form>
         </div>
       </section>
@@ -282,6 +275,117 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* New Section: Footer-like content based on the image */}
+      <section className="py-16 px-4 bg-[#f4edf9]" id="new-footer-section">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-6 gap-10 items-start">
+          {/* Left Part: Logo and Socials */}
+          <div className="md:col-span-2 flex flex-col items-start">
+            <h2 className="text-3xl font-bold text-[#1a3a30] mb-2">Pure Serve</h2>
+            <p className="text-xl text-[#1a3a30] font-semibold mb-6">VENTURES</p>
+            <div className="flex space-x-4">
+              {/* Email Icon */}
+              <a href="#" className="text-gray-600 hover:text-[#7e5ca3]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-17 4v7a2 2 0 002 2h14a2 2 0 002-2v-7m-17 0v-5a2 2 0 012-2h14a2 2 0 012 2v5"
+                  />
+                </svg>
+              </a>
+              {/* Instagram Icon */}
+              <a href="#" className="text-gray-600 hover:text-[#7e5ca3]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M11.999 7.001C9.697 7.001 7.999 8.7 7.999 11c0 2.302 1.698 4.001 4.001 4.001 2.302 0 4.001-1.699 4.001-4.001 0-2.3-1.699-4-4.001-4zm0 6.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zm6.5-7.5h.001v.001H18.5z"
+                  />
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                </svg>
+              </a>
+              {/* WhatsApp Icon */}
+              <a href="#" className="text-gray-600 hover:text-[#7e5ca3]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.472 14.284A6.995 6.995 0 0019 12c0-3.87-3.13-7-7-7s-7 3.13-7 7a6.995 6.995 0 001.528 4.284L3 21l6.716-1.528A6.995 6.995 0 0012 19c3.87 0 7-3.13 7-7s-3.13-7-7-7-7 3.13-7 7zm-5.472-1.284c-.39-2.02-1.92-2.98-3.52-2.98-.82 0-1.63.4-2.18.96-.55.55-.83 1.25-.83 2.02 0 .78.28 1.48.83 2.02.55.56 1.36.96 2.18.96 1.6 0 3.13-.96 3.52-2.98zm-1.528 1.284c.39 2.02 1.92 2.98 3.52 2.98.82 0 1.63-.4 2.18-.96.55-.55.83-1.25.83-2.02 0-.78-.28-1.48-.83-2.02-.55-.56-1.36-.96-2.18-.96-1.6 0-3.13.96-3.52 2.98z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          {/* Right Part: Four Columns of Links */}
+          <div className="md:col-span-4 grid grid-cols-2 sm:grid-cols-4 gap-8">
+            {/* Account Column */}
+            <div>
+              <h4 className="font-semibold text-black mb-4">Account</h4>
+              <ul className="space-y-2 text-gray-600">
+                <li><a href="#" className="hover:underline">Saving</a></li>
+                <li><a href="#" className="hover:underline">Join Accounts</a></li>
+                <li><a href="#" className="hover:underline">Crypto</a></li>
+                <li><a href="#" className="hover:underline">Freelance</a></li>
+                <li><a href="#" className="hover:underline">Commodities</a></li>
+              </ul>
+            </div>
+
+            {/* Help Column */}
+            <div>
+              <h4 className="font-semibold text-black mb-4">Help</h4>
+              <ul className="space-y-2 text-gray-600">
+                <li><a href="#" className="hover:underline">Customer Help</a></li>
+                <li><a href="#" className="hover:underline">Community</a></li>
+                <li><a href="#" className="hover:underline">Blog</a></li>
+              </ul>
+            </div>
+
+            {/* Finance Column */}
+            <div>
+              <h4 className="font-semibold text-black mb-4">Finance</h4>
+              <ul className="space-y-2 text-gray-600">
+                <li><a href="#" className="hover:underline">Cards</a></li>
+                <li><a href="#" className="hover:underline">Linked Account</a></li>
+                <li><a href="#" className="hover:underline">Payment</a></li>
+              </ul>
+            </div>
+
+            {/* Company Column */}
+            <div>
+              <h4 className="font-semibold text-black mb-4">Company</h4>
+              <ul className="space-y-2 text-gray-600">
+                <li><a href="#" className="hover:underline">About Us</a></li>
+                <li><a href="#" className="hover:underline">Contact</a></li>
+                <li><a href="#" className="hover:underline">Services</a></li>
+                <li><a href="#" className="hover:underline">Career</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <a
         href="https://wa.me/1234567890"
         target="_blank"
@@ -296,7 +400,7 @@ export default function HomePage() {
       </a>
 
       <footer className="text-center py-6 bg-[#faf6ff] border-t mt-10">
-        <p className="text-black">&copy; {new Date().getFullYear()} Your Business Name. All rights reserved.</p>
+        <p className="text-black">&copy; {new Date().getFullYear()} Pure Serve Ventures. All rights reserved.</p>
       </footer>
     </div>
   );
