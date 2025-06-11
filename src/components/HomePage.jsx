@@ -31,7 +31,7 @@ export default function HomePage() {
       <header className="flex justify-between items-center px-6 py-6 gap-10 shadow-md bg-[#faf6ff] fixed top-0 left-0 w-full z-50">
         <div className="flex items-center space-x-3">
           <img src="/logo.jpg" alt="Logo" className="w-10 h-10 rounded-full" />
-          <h1 className="text-2xl font-bold text-black">Your Business Name</h1>
+          <h1 className="text-2xl font-bold text-black">Pure Serve Ventures</h1>
         </div>
         <nav className="space-x-20 hidden md:block">
           <a href="#about" className="text-black">About Us</a>
