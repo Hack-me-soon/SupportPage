@@ -1,30 +1,145 @@
-import React, { useState } from "react";
-import { Button } from "../components/ui/button";
+import React, { useState, useEffect, useRef } from "react";
+import { Button } from "../components/ui/button"; // Assuming this Button is from your UI library
 import { Card, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 
+// Swiper imports
+import { Swiper, SwiperSlide } from 'swiper/react';
+// Import Navigation module for arrow buttons
+import { EffectCoverflow, Pagination, Keyboard, Mousewheel, Navigation } from 'swiper/modules';
+
+// Import Swiper styles (these are external and still needed)
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+// No custom CSS file imported here, all styling is inline Tailwind CSS
+
 export default function HomePage() {
-  const visibleCount = 5;
-  const expertCount = 10;
-  const totalSlides = expertCount + visibleCount;
-  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const nextSlide = () => {
-    if (currentIndex >= expertCount) {
-      setCurrentIndex(0);
-    } else {
-      setCurrentIndex((prev) => prev + 1);
-    }
+  // Carousel settings
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    arrows: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
-  const prevSlide = () => {
-    if (currentIndex <= 0) {
-      setCurrentIndex(expertCount - 1);
-    } else {
-      setCurrentIndex((prev) => prev - 1);
-    }
+  // Custom Button component (if not from a separate UI library)
+  const CustomButton = ({ children, className, onClick }) => (
+    <button className={className} onClick={onClick}>
+      {children}
+    </button>
+  );
+
+  // Expert data for the Swiper carousel (first slider)
+  const experts = [
+    {
+      type: 'domestic',
+      title: 'Enjoy the exotic of sunny Hawaii',
+      location: 'Maui, Hawaii',
+      imageUrl: 'https://images.unsplash.com/photo-1556206079-747a7a424d3d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=871&q=80',
+      tagColor: '#62667f',
+    },
+    {
+      type: 'subtropical',
+      title: 'The Island of Eternal Spring',
+      location: 'Lanzarote, Spanien',
+      imageUrl: 'https://images.unsplash.com/photo-1571900670723-a317a66e3fb7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=423&q=80',
+      tagColor: '#087ac4',
+    },
+    {
+      type: 'history',
+      title: 'Awesome Eiffel Tower',
+      location: 'Paris, France',
+      imageUrl: 'https://images.unsplash.com/photo-1549144511-f099e773c147?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG0tby1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+      tagColor: '#b45205',
+    },
+    {
+      type: 'Mayans',
+      title: 'One of the safest states in Mexico',
+      location: 'The Yucatan, Mexico',
+      imageUrl: 'https://images.unsplash.com/photo-1650367310179-e1b5b8e453c3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG0tby1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
+      tagColor: '#087ac4',
+    },
+    {
+      type: 'native',
+      title: 'The most popular yachting destination',
+      location: 'Whitsunday Islands, Australia',
+      imageUrl: 'https://images.unsplash.com/photo-1596521864207-13d46b1a0c78?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
+      tagColor: '#1b7402',
+    },
+  ];
+
+  // Updated serviceItems to match the new image exactly
+  const serviceItems = [
+    {
+      title: "Full home painting consultation",
+      rating: "4.79 (50K)",
+      price: "₹49",
+      imageUrl: "https://placehold.co/350x250/cccccc/000000?text=Painting+Man", // Resembles the man painting
+    },
+    {
+      title: "Bed bugs control",
+      rating: "4.77 (23K)",
+      price: "₹1,599",
+      imageUrl: "https://placehold.co/350x250/cccccc/000000?text=Bed+Bugs+Control", // Resembles bed bugs control
+    },
+    {
+      title: "At home consultation",
+      rating: "4.79 (6K)",
+      price: "₹49",
+      imageUrl: "https://placehold.co/350x250/cccccc/000000?text=Consultation", // Resembles a consultation
+    },
+    {
+      title: "Intense cleaning (2 bathrooms)",
+      rating: "4.78 (2.5M)",
+      price: "₹960",
+      originalPrice: "₹1,038",
+      imageUrl: "https://placehold.co/350x250/cccccc/000000?text=Cleaning", // Resembles cleaning service
+    },
+    {
+      title: "Swedish stress relief massage",
+      rating: "4.84 (177K)",
+      price: "₹1,299",
+      imageUrl: "https://placehold.co/350x250/cccccc/000000?text=Massage", // Resembles massage service
+    },
+  ];
+
+  // Lift the openIndex state for the FAQ section outside the map function
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
+
+  // Define the toggle function for FAQ items
+  const toggleFaq = (index) => {
+    setOpenFaqIndex((prev) => (prev === index ? null : index));
   };
+
 
   return (
     <div className="pt-24 bg-gradient-to-b from-[#f0ebf8] to-[#e9e4f0] text-gray-800">
@@ -100,6 +215,125 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="bg-gray-100 py-12 mt-24">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-bold text-center mb-8">Most booked services</h2>
+          <Slider {...settings}>
+            {serviceItems.map((item, index) => (
+              <div
+                key={index}
+                className="bg-white p-6 rounded-lg shadow-lg flex flex-col h-full"
+              >
+                <img
+                  src={item.imageUrl}
+                  alt={item.title}
+                  className="w-full h-48 object-cover rounded-md mb-4"
+                />
+                <div className="flex flex-grow flex-col justify-between">
+                  <div>
+                    <h3 className="text-xl font-semibold">{item.title}</h3>
+                    <p className="text-sm text-gray-500">{item.price}</p>
+                  </div>
+                  <div className="flex items-center justify-between mt-auto">
+                    <div className="flex items-center">
+                      <span className="text-yellow-500">★</span>
+                      <span>{item.rating}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Slider>
+        </div>
+      </section>
+
+      {/* --- NEW SECTION: Most Booked Services Slider (Exact Image Match with Tailwind Only) --- */}
+      <section className="py-20 bg-white"> {/* services-slider-section class removed */}
+        <h2 className="text-3xl font-bold mb-8 text-black text-left px-4 md:text-left md:max-w-7xl md:mx-auto"> {/* Max-width applied directly */}
+          Most booked services
+        </h2>
+        <div className="relative max-w-full md:max-w-7xl mx-auto px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 box-border"> {/* service-swiper-container classes */}
+          <Swiper
+            slidesPerView={1.1} // Show one full card and a hint of the next
+            spaceBetween={16} // Gap between cards
+            grabCursor={true}
+            loop={true}
+            centeredSlides={false} // Ensure first slide starts from the left
+            navigation={{
+              nextEl: '.swiper-button-next-services',
+              prevEl: '.swiper-button-prev-services',
+            }}
+            modules={[Navigation]}
+            className="w-full py-2.5 box-border" // servicesSwiper classes
+            breakpoints={{
+              640: { // sm breakpoint
+                slidesPerView: 2.1,
+                spaceBetween: 20,
+              },
+              768: { // md breakpoint (Desktop view from image)
+                slidesPerView: 3.5, // Shows 3 full cards and a good portion of the 4th
+                spaceBetween: 24,
+              },
+              1024: { // lg breakpoint
+                slidesPerView: 4.5,
+                spaceBetween: 28,
+              },
+              1280: { // xl breakpoint
+                slidesPerView: 4.5, // Similar to 1024, adjust if more visibility is needed
+                spaceBetween: 32,
+              },
+            }}
+          >
+            {serviceItems.map((service, i) => (
+              <SwiperSlide key={i} className="!w-auto !h-[250px] !block !m-0 !p-0 !box-border"> {/* swiper-slide classes */}
+                <div className="w-full h-full rounded-lg overflow-hidden shadow-md bg-white flex flex-col"> {/* service-card classes */}
+                  <img
+                    src={service.imageUrl}
+                    alt={service.title}
+                    className="w-full h-[160px] object-cover" // service-image classes
+                    onError={(e) => {
+                      e.target.onerror = null; // Prevent infinite loop
+                      e.target.src = `https://placehold.co/350x250/cccccc/000000?text=Service`; // Generic fallback
+                    }}
+                  />
+                  {/* Text Content Below Image */}
+                  <div className="p-3.5 px-4 flex flex-col flex-grow items-start justify-start"> {/* text-content-wrapper classes */}
+                    <h4 className="text-base font-semibold text-black leading-tight mb-1 line-clamp-2"> {/* service-title classes */}
+                      {service.title}
+                    </h4>
+                    <p className="text-sm text-gray-500 flex items-center mt-1 mb-3 leading-tight"> {/* service-rating classes */}
+                      <span className="text-yellow-500 mr-1">★</span>
+                      {service.rating}
+                    </p>
+                    <div className="flex items-baseline"> {/* service-price-wrapper classes */}
+                      <span className="text-lg font-bold text-black mr-2"> {/* service-price-current classes */}
+                        {service.price}
+                      </span>
+                      {service.originalPrice && (
+                        <span className="text-sm text-gray-400 line-through"> {/* service-price-original classes */}
+                          {service.originalPrice}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          {/* Custom Navigation Arrows */}
+          <div className="swiper-button-prev-services absolute top-1/2 left-0 transform -translate-y-1/2 ml-4 bg-white rounded-full p-3 shadow-md cursor-pointer z-10 hidden md:flex items-center justify-center transition-all duration-200 ease-in-out hover:scale-105">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6 text-gray-700">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </div>
+          <div className="swiper-button-next-services absolute top-1/2 right-0 transform -translate-y-1/2 mr-4 bg-white rounded-full p-3 shadow-md cursor-pointer z-10 hidden md:flex items-center justify-center transition-all duration-200 ease-in-out hover:scale-105">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6 text-gray-700">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </div>
+        </div>
+      </section>
+
       <section className="py-20 px-4 bg-[#faf6ff]" id="contact">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-start">
           {/* Left Column */}
@@ -109,7 +343,7 @@ export default function HomePage() {
             <p className="text-gray-600">
               Have more specific questions? Contact us through your preferred channel
             </p>
-            <div className="mt-6 space-y-3 flex flex-col items-center"> {/* Added flex, flex-col, and items-center */}
+            <div className="mt-6 space-y-3 flex flex-col items-center">
               <a
                 href="tel:+1234567890"
                 className="inline-block w-full max-w-xs bg-[#7e5ca3] hover:bg-[#6b4899] text-white text-center py-3 rounded font-medium"
@@ -128,7 +362,7 @@ export default function HomePage() {
           </div>
 
           {/* Right Column: Conversational Form */}
-          <form className="max-w-2xl mx-auto space-y-4 md:pl-16 md:border-l md:border-gray-300"> {/* Changed md:pl-10 to md:pl-16 */}
+          <form className="max-w-2xl mx-auto space-y-4 md:pl-16 md:border-l md:border-gray-300">
             <h3 className="text-4xl text-black mb-4">Fill the Form &</h3>
             <h3 className="text-4xl font-semibold text-black mb-4">We will Contact You</h3><br />
             <div className="grid md:grid-cols-2 gap-4">
@@ -145,64 +379,75 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white py-12 px-4">
+      {/* --- Original Swiper.js Experts Section (still using some inline styles for effect-coverflow specifics) --- */}
+      <section className="bg-white py-12 px-4 relative w-full flex flex-col justify-center items-center overflow-hidden"> {/* expert-section classes */}
         <h3 className="text-3xl font-semibold text-center mb-6 text-black">
           Experts Ready to Help
         </h3>
         <div className="relative max-w-6xl mx-auto">
-          <div className="overflow-hidden">
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{
-                transform: `translateX(-${(currentIndex % expertCount) * (100 / visibleCount)}%)`,
-              }}
-            >
-              {[...Array(expertCount + visibleCount)].map((_, i) => {
-                const realIndex = i % expertCount;
-                return (
-                  <div
-                    key={i}
-                    className={`w-full md:w-1/5 flex-shrink-0 px-2 transition-all duration-300 ${realIndex === (currentIndex + 2) % expertCount ? 'scale-110' : 'scale-90'
-                      }`}
-                  >
-                    <img
-                      src={`/images/expert-${realIndex + 1}.jpg`}
-                      alt={`Expert ${realIndex + 1}`}
-                      className="rounded-xl w-full h-72 object-cover shadow-md"
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className="flex justify-center items-center gap-4 mt-6">
-            <button
-              onClick={() =>
-                setCurrentIndex((prev) =>
-                  prev <= 0 ? expertCount - 1 : prev - 1
-                )
-              }
-              className="w-10 h-10 rounded-full bg-[#7e5ca3] text-white"
-            >
-              &#8592;
-            </button>
-            <button
-              onClick={() =>
-                setCurrentIndex((prev) => (prev + 1) % expertCount)
-              }
-              className="w-10 h-10 rounded-full bg-[#7e5ca3] text-white"
-            >
-              &#8594;
-            </button>
-          </div>
+          <Swiper
+            effect={'coverflow'}
+            grabCursor={true}
+            centeredSlides={true}
+            slidesPerView={'auto'}
+            coverflowEffect={{
+              rotate: 0,
+              stretch: 0,
+              depth: 100,
+              modifier: 2,
+              slideShadows: true,
+            }}
+            keyboard={{
+              enabled: true,
+            }}
+            mousewheel={{
+              thresholdDelta: 70,
+            }}
+            spaceBetween={60}
+            loop={true}
+            pagination={{
+              clickable: true,
+            }}
+            modules={[EffectCoverflow, Pagination, Keyboard, Mousewheel]}
+            className="w-full pt-[50px] pb-[50px]" // mySwiper classes
+          >
+            {experts.map((expert, i) => (
+              <SwiperSlide
+                key={i}
+                className={`!w-[300px] !h-[400px] shadow-lg rounded-xl flex flex-col justify-end items-start relative overflow-hidden transition-all duration-300 ease-in-out`} // Removed filter blur-sm
+                style={{
+                  backgroundImage: `linear-gradient(to top, #0f2027, rgba(32, 58, 67, 0), rgba(44, 83, 100, 0)), url(${expert.imageUrl})`, // linear-gradient overlay and background-image
+                  backgroundSize: 'cover',
+                  backgroundPosition: '50% 50%',
+                }}
+              >
+                <span className="text-uppercase text-white bg-[#1b7402] py-1.5 px-6 rounded-r-2xl tracking-wide text-xs relative z-10" style={{backgroundColor: expert.tagColor}}> {/* swiper-slide span */}
+                  {expert.type}
+                </span>
+                <div className="relative z-10"> {/* Container for h2 and p */}
+                  <h2 className="text-white font-normal text-lg leading-tight mb-4 pt-6 px-6"> {/* swiper-slide h2 */}
+                    {expert.title}
+                  </h2>
+                  <p className="text-white font-light flex items-center px-6 pb-9"> {/* swiper-slide p */}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 text-white mr-1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                    </svg>
+                    {expert.location}
+                  </p>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
           <p className="text-center text-black mt-4 max-w-2xl mx-auto">
             Behind every solution is a real person who’s ready to assist you with professionalism and care.
             Meet our financial advisors, tech team, and service consultants.
           </p>
           <div className="text-center mt-4">
-            <Button className="bg-[#7e5ca3] hover:bg-[#6b4899]">
+            <CustomButton className="bg-[#7e5ca3] hover:bg-[#6b4899]">
               Check Our Team
-            </Button>
+            </CustomButton>
           </div>
         </div>
       </section>
@@ -247,25 +492,22 @@ export default function HomePage() {
                   "Yes, we specialize in helping startups and growing businesses create sustainable and scalable financial plans.",
               },
             ].map((item, index) => {
-              const [openIndex, setOpenIndex] = useState(null);
-              const toggle = () =>
-                setOpenIndex((prev) => (prev === index ? null : index));
-
+              // Now using the single openFaqIndex state and toggleFaq function
               return (
                 <div
                   key={index}
                   className="bg-white rounded-xl shadow p-4 transition-all"
                 >
                   <button
-                    onClick={toggle}
+                    onClick={() => toggleFaq(index)} // Call the centralized toggle function
                     className="flex justify-between items-center w-full text-left text-black font-medium text-lg"
                   >
                     {item.question}
                     <span className="text-xl">
-                      {openIndex === index ? "−" : "+"}
+                      {openFaqIndex === index ? "−" : "+"}
                     </span>
                   </button>
-                  {openIndex === index && (
+                  {openFaqIndex === index && (
                     <div className="mt-2 text-sm text-gray-700">{item.answer}</div>
                   )}
                 </div>
